@@ -136,12 +136,17 @@ Tips:
 
 You *may* defined these filters to retrieve objects:
 
-* _allFilter_: filter to retrieve all entries during sync phase or clean phase.
-* _oneFilter_: computed filter to retrieve one entry in destination during sync phase (you can use pivot name as placeholder eg. `(uid={cn})`) like in a regular LSC connector. 
-* _cleanFilter_: computed filter to retrieve one entry in source during clean phase (you can use pivot name as placeholder eg. `(uid={cn})`) like in a regular LSC connector.
-* _filter_: Default filter to retrieve all or individual entries during sync phase or clean phase.
+In both source and destination service, you can define _filter_ to retrieve all or any individual entries during sync phase or clean phase.
 
-If no filters are defined, the connector will retrieve all entries of type _entity_ in _base_ branch and retrieve individual entries based on its _pivot_ attribute matching the pivot value(s) of the source entry.
+Alternatively, you may use :
+
+* _allFilter_: retrieves all entries during sync phase or clean phase.
+* _oneFilter_: retrieves one entry during sync phase, with pivot attribute as placeholder: `(uid={cn})` 
+
+
+In Source service only, you may define _cleanFilter_ to retrieve one entry from source during clean phase using destination pivot attribute as placeholder: `(uid={cn})`.
+
+When no filters are defined, the connector will retrieve all entries of type _entity_ in _base_ branch and retrieve individual entries based on its _pivot_ attribute matching the pivot value(s) of the source entry.
 
 ### propertiesBasedSyncOptions
 

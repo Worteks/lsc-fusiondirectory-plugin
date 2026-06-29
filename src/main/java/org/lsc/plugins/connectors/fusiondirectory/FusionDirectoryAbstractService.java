@@ -42,7 +42,6 @@ public abstract class FusionDirectoryAbstractService implements IService {
 	protected Optional<String> filter;
 	protected Optional<String> allFilter;
 	protected Optional<String> oneFilter;
-	protected Optional<String> cleanFilter;
 	protected Optional<String> template;
 	protected Attributes attributesSettings;
 
@@ -81,9 +80,9 @@ public abstract class FusionDirectoryAbstractService implements IService {
 
 	}
 
-	protected Optional<Entry<String, LscDatasets>> findFirstByPivots(LscDatasets pivots, boolean clean)
+	protected Optional<Entry<String, LscDatasets>> findFirstByPivots(LscDatasets pivots,
+			Optional<String> computedFilter)
 			throws LscServiceException {
-		Optional<String> computedFilter = clean ? cleanFilter : oneFilter;
 		if (computedFilter.isPresent()) {
 			for (String somePivot : pivots.getAttributesNames()) {
 				computedFilter = Optional.of(Pattern.compile("\\{" + somePivot + "\\}", Pattern.CASE_INSENSITIVE)
