@@ -160,8 +160,7 @@ public abstract class FusionDirectoryAbstractService implements IService {
 		Map<String, Map<String, Object>> attrs = new HashMap<String, Map<String, Object>>();
 		for (String attribute : modificationsItemsByHash.keySet()) {
 			TabAttribute tabAttribute = getTabAttribute(attribute);
-			if (modificationsItemsByHash.get(attribute) instanceof ArrayList<?>) {
-				ArrayList<?> list = (ArrayList<?>) modificationsItemsByHash.get(attribute);
+			if (modificationsItemsByHash.get(attribute) instanceof ArrayList<?> list) {
 				if (!list.isEmpty() || tabAttribute.getAttribute().isMultiple() || tabAttribute.isOption()) {
 					if (attrs.get(tabAttribute.getTab()) == null) {
 						attrs.put(tabAttribute.getTab(), new HashMap<String, Object>());
@@ -195,8 +194,8 @@ public abstract class FusionDirectoryAbstractService implements IService {
 		List<String> toDelete = new ArrayList<>();
 		for (String attribute : modificationsItemsByHash.keySet()) {
 			TabAttribute tabAttribute = getTabAttribute(attribute);
-			if (modificationsItemsByHash.get(attribute) instanceof ArrayList<?>) {
-				if (((ArrayList<?>) modificationsItemsByHash.get(attribute)).isEmpty()
+			if (modificationsItemsByHash.get(attribute) instanceof ArrayList<?> list) {
+				if (list.isEmpty()
 						&& !tabAttribute.getAttribute().isMultiple() && !tabAttribute.isOption()) {
 					toDelete.add(tabAttribute.getTab() + "/" + tabAttribute.getAttribute().getValue());
 				}
@@ -266,10 +265,10 @@ public abstract class FusionDirectoryAbstractService implements IService {
 			if (mopt.matches()) {
 				String option = mopt.group(2);
 				if (currentValues != null) {
-					if (currentValues instanceof String) {
-						newValues.add((String) currentValues);
-					} else if (currentValues instanceof List<?>) {
-						newValues.addAll((List<? extends String>) currentValues);
+					if (currentValues instanceof String s) {
+						newValues.add(s);
+					} else if (currentValues instanceof List<?> list) {
+						newValues.addAll((List<? extends String>) list);
 					}
 				}
 				for (Object value : list) {
