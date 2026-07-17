@@ -402,7 +402,7 @@ public class FusionDirectoryDao {
 		if (mopt.matches()) {
 			String option = mopt.group(2);
 			if (rawValues instanceof String s
-					&& (s.toLowerCase().startsWith(option.toLowerCase() + ";")) {
+					&& (s.toLowerCase().startsWith(option.toLowerCase() + ";"))) {
 				values.add(s.replaceAll("(?i)" + option + ";", ""));
 			} else if (rawValues instanceof List<?> list) {
 				for (Object rawValue : list) {
