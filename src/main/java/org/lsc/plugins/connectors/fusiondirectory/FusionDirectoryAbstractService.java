@@ -266,8 +266,8 @@ public abstract class FusionDirectoryAbstractService implements IService {
 				if (currentValues != null) {
 					if (currentValues instanceof String s) {
 						newValues.add(s);
-					} else if (currentValues instanceof List<?> list) {
-						newValues.addAll((List<? extends String>) list);
+					} else if (currentValues instanceof List<?> somelist) {
+						newValues.addAll((List<? extends String>) somelist);
 					}
 				}
 				for (Object value : list) {
