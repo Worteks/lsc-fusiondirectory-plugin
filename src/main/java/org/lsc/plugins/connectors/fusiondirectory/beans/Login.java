@@ -42,29 +42,11 @@
  */
 package org.lsc.plugins.connectors.fusiondirectory.beans;
 
-public class Login {
-	private String user;
-	private String password;
-	private String directory;
-	
-	public String getUser() {
-		return user;
-	}
-	public void setUser(String user) {
-		this.user = user;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getDirectory() {
-		return directory;
-	}
-	public void setDirectory(String directory) {
-		this.directory = directory;
-	}
-	
-	
+import java.util.Objects;
+
+public record Login(String user, String password, String directory) {
+    public Login {
+        Objects.requireNonNull(user, "user must not be null");
+        Objects.requireNonNull(password, "password must not be null");
+    }
 }

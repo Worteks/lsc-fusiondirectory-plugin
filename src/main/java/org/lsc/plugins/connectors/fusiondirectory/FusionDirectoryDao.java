@@ -135,10 +135,7 @@ public class FusionDirectoryDao {
 	private Token startSession() throws LscServiceException {
 		Response response = null;
 		try {
-			Login login = new Login();
-			login.setUser(username);
-			login.setPassword(password);
-			login.setDirectory(directory);
+			Login login = new Login(username, password, directory);
 			WebTarget currentTarget = target.path("login");
 			LOGGER.info(String.format("Login to FusionDirectory %s as %s for thread %s ... ",
 					currentTarget.getUri().toString(), username, Thread.currentThread().threadId()));
