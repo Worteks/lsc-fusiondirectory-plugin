@@ -361,12 +361,12 @@ public class FusionDirectoryDao {
 								throw new LscServiceException(String.format("Attribute %s could not be found in tab %s", attribute.getValue(), attributesTab.getName()));
 							}
 							// Empty string value are considered unset
-							if (value instanceof String && ((String)value).isEmpty()) {
+							if (value instanceof String s && s.isEmpty()) {
 								continue;
 							}
 							// LscBean does not accept Long object
-							if (value instanceof Long) {
-								value = ((Long)value).toString();
+							if (value instanceof Long l) {
+								value = l.toString();
 							}
 							results.put(attribute.getValue(), value);
 						}
@@ -401,11 +401,11 @@ public class FusionDirectoryDao {
 		List<String> values = new ArrayList<String>();
 		if (mopt.matches()) {
 			String option = mopt.group(2);
-			if (rawValues instanceof String
-					&& ((String) rawValues).toLowerCase().startsWith(option.toLowerCase() + ";")) {
-				values.add(((String) rawValues).replaceAll("(?i)" + option + ";", ""));
-			} else if (rawValues instanceof List<?>) {
-				for (Object rawValue : (List<Object>) rawValues) {
+			if (rawValues instanceof String s
+					&& (s.toLowerCase().startsWith(option.toLowerCase() + ";")) {
+				values.add(s.replaceAll("(?i)" + option + ";", ""));
+			} else if (rawValues instanceof List<?> list) {
+				for (Object rawValue : list) {
 					if (((String) rawValue).toLowerCase().startsWith(option.toLowerCase() + ";")) {
 						values.add(((String) rawValue).replaceAll("(?i)" + option + ";", ""));
 					}
