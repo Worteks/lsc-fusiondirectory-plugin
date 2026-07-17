@@ -94,7 +94,6 @@ public class FusionDirectoryDstService extends FusionDirectoryAbstractService im
 			this.filter = getStringParameter(settings.getFilter());
 			this.allFilter = getStringParameter(settings.getAllFilter());
 			this.oneFilter = getStringParameter(settings.getOneFilter());
-			this.cleanFilter = getStringParameter(settings.getCleanFilter());
 			this.template = getStringParameter(settings.getTemplate());
 			this.attributesSettings = settings.getAttributes();
 
@@ -107,8 +106,15 @@ public class FusionDirectoryDstService extends FusionDirectoryAbstractService im
 	public IBean getBean(String pivotValue, LscDatasets lscDatasets, boolean fromSameService) throws LscServiceException {
 		LOGGER.debug(String.format("Call to getBean(%s, %s, %b)", pivotValue, lscDatasets, fromSameService));
 		String pivotName = getPivotName();
+
+		// If fromSameService is true, we are in clean mode with no source bean, so we
+		// should not use oneFilter as it is meant to hold source pivots attribute will
+		// not be available
+		Optional<String> usefilter = fromSameService ? java.util.Optional.empty() : oneFilter;
+
 		try {
-			Optional<Entry<String, LscDatasets>> entity = findFirstByPivots(lscDatasets, false);
+
+			Optional<Entry<String, LscDatasets>> entity = findFirstByPivots(lscDatasets, usefilter);
 			if (entity.isPresent()) {
 				String dn = entity.get().getValue().getStringValueAttribute(DN);
 				

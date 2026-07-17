@@ -67,6 +67,8 @@ public class FusionDirectorySrcService extends FusionDirectoryAbstractService im
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(FusionDirectorySrcService.class);
 
+	protected Optional<String> cleanFilter;
+
 	@SuppressWarnings("unchecked")
 	public FusionDirectorySrcService(final TaskType task) throws LscServiceConfigurationException {
 		try {
@@ -144,7 +146,7 @@ public class FusionDirectorySrcService extends FusionDirectoryAbstractService im
 	private IBean getBeanForClean(String pivotValue, LscDatasets pivots) throws LscServiceException {
 		String pivotName = getPivotName();
 		try {
-			Optional<Entry<String, LscDatasets>> entity = findFirstByPivots(pivots, true);
+			Optional<Entry<String, LscDatasets>> entity = findFirstByPivots(pivots, cleanFilter);
 			if (entity.isPresent()) {
 				IBean bean = beanClass.getDeclaredConstructor().newInstance();
 				bean.setMainIdentifier(entity.get().getKey().toString());
