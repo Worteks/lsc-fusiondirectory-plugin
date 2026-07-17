@@ -174,7 +174,7 @@ public class FusionDirectoryDao {
 		}
 	}
 	private Token getToken(boolean resetSession) throws LscServiceException {
-		if (resetSession == true) {
+		if (resetSession) {
 			LOGGER.info(String.format("Reset FusionDirectory session as %s for thread %s", username,
 					Thread.currentThread().threadId()));
 		}
@@ -464,7 +464,7 @@ public class FusionDirectoryDao {
 					}
 				}
 			}
-			// List<String> toDelete = prepareAttributesToDelete(modificationsItemsByHash);
+
 			for (String deleteAttr : deleteAttributes) {
 				Response response = null;
 				try {
@@ -512,7 +512,6 @@ public class FusionDirectoryDao {
 
 	public List<String> getAttribute(String entity, String dn, String attribute) throws LscServiceException {
 		List<String> results = new ArrayList<>();
-		ObjectMapper mapper = new ObjectMapper();
 		Response response = null;
 		try {
 			WebTarget currentTarget = target.path(OBJECTS).path(entity);
