@@ -162,11 +162,10 @@ public class FusionDirectoryDao {
 			LOGGER.info(String.format("Logout from FusionDirectory %s as %s for thread %s",
 					currentTarget.getUri().toString(), username, Thread.currentThread().threadId()));
 			response = currentTarget.request().header(SESSION_TOKEN, token.getSessionId()).post(Entity.json(null));
+			String body = response.readEntity(String.class);
 			if (!checkResponse(response)) {
-				String warnMessage = String.format("Cannot logout from Fusiondirectory, message: %s", response.readEntity(String.class));
-				LOGGER.warn(warnMessage);
+				LOGGER.warn("Cannot logout from FusionDirectory, message: {}", body);
 			}
-			response.readEntity(String.class);
 		} finally {
 			if (response != null) {
 				response.close();
@@ -300,30 +299,22 @@ public class FusionDirectoryDao {
 		return response;
 	}
 
-	public ObjectNode getList(String entity, Optional<String> base, Optional<String> pivot,
-			Optional<String> computedFilter) throws LscServiceException {
-		Response response = null;
-		try {
-			WebTarget currentTarget = target.path(OBJECTS).path(entity);
-			if (base.isPresent()) {
-				currentTarget = currentTarget.queryParam("base", base.get());
-			}
-			if (computedFilter.isPresent()) {
-				currentTarget = currentTarget.queryParam("filter", computedFilter.get());
-			}
-			if (pivot.isPresent()) {
-				currentTarget = currentTarget.queryParam("attrs[" + getPivotName(pivot) + "]", "*");
-			}
-			LOGGER.debug(String.format("Search %s from: %s with filter %s ", entity, currentTarget.getUri().toString(),
-					computedFilter));
-			return (ObjectNode) mapper.readTree(httpGet(currentTarget).readEntity(String.class));
-
+	public ObjectNode getList(String entity, Optional<String> base, Optional<String> pivot, Optional<String> computedFilter) throws LscServiceException {
+		WebTarget currentTarget = target.path(OBJECTS).path(entity);
+		if (base.isPresent()) {
+			currentTarget = currentTarget.queryParam("base", base.get());
+		}
+		if (computedFilter.isPresent()) {
+			currentTarget = currentTarget.queryParam("filter", computedFilter.get());
+		}
+		if (pivot.isPresent()) {
+			currentTarget = currentTarget.queryParam("attrs[" + getPivotName(pivot) + "]", "*");
+		}
+		LOGGER.debug("Search {} from: {} with filter {} ", entity, currentTarget.getUri().toString(), computedFilter);
+		try (Response httpResponse = httpGet(currentTarget)) {
+			return (ObjectNode) mapper.readTree(httpResponse.readEntity(String.class));
 		} catch (JsonProcessingException e) {
 			throw new LscServiceException(e);
-		} finally {
-			if (response != null) {
-				response.close();
-			}
 		}
 	}
 
